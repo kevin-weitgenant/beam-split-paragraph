@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "beam-split-paragraph"
+version = "0.1.0"
+description = ""
+authors = ["kevin-weitgenant <kevin.weitgenant@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+wtpsplit = "^2.1.0"
+torch = "^2.5.0"
+onnxruntime-gpu = "==1.19.2"
+onnxruntime = "==1.19.2"
+beam-client = "^0.2.112"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
