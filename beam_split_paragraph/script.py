@@ -1,28 +1,29 @@
 from beam import endpoint, Image
+import torch
+from wtpsplit import SaT
 
 image = Image(
-    base_image="nvcr.io/nvidia/pytorch:23.12-py3",  # Using a slightly older but stable version
-    python_packages="requirements.txt",
+    base_image="docker.io/nvidia/cuda:12.4.0-runtime-ubuntu20.04",
+    python_version="python3.10",
+).add_python_packages(
+    [
+        "wtpsplit",
+        "onnxruntime-gpu==1.16.3",
+        "torch",
+    ]
 )
 
 
-@endpoint(image=image, gpu="T4", memory="16Gi", cpu=2, name="segment-paragraphs")
+@endpoint(image=image, gpu=["T4", "A10G", "A100-40"])
 def segment_text(text: str):
-    from wtpsplit import SaT
-    import torch
-
-    # Print version info for debugging
     print(f"PyTorch version: {torch.__version__}")
     print(f"CUDA available: {torch.cuda.is_available()}")
     if torch.cuda.is_available():
         print(f"CUDA version: {torch.version.cuda}")
 
-    # Initialize model with CUDA support
     model = SaT(
         "sat-3l-sm", ort_providers=["CUDAExecutionProvider", "CPUExecutionProvider"]
     )
 
-    # Perform segmentation
     segmented = model.split(text, do_paragraph_segmentation=True, verbose=True)
-
     return {"segmented_text": segmented}

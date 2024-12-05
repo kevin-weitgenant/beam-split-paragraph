@@ -7,11 +7,13 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-wtpsplit = "^2.1.0"
-torch = "^2.5.0"
-onnxruntime-gpu = "==1.19.2"
-onnxruntime = "==1.19.2"
+
 beam-client = "^0.2.112"
+wtpsplit = "^2.1.1"
+torch = "^2.5.1"
+onnxruntime-gpu = "1.19.2"
+
+
 
 
 [build-system]
