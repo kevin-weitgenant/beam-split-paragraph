@@ -1,21 +1,26 @@
-import time
-from wtpsplit import SaT
-
-
-def segment_text(text):
+def segment_text(text: str):
+    import torch
+    from wtpsplit import SaT
+    import time
     overall_start = time.time()
 
-    # Initialize SaT model for ONNX Runtime
-    model = SaT(
-        "sat-3l-sm", ort_providers=["CUDAExecutionProvider", "CPUExecutionProvider"]
-    )
+   
+    # Print environment information
+    print(f"\nPyTorch version: {torch.__version__}")
+    print(f"CUDA available: {torch.cuda.is_available()}")
+    if torch.cuda.is_available():
+        print(f"CUDA version: {torch.version.cuda}")
+        print(f"Current CUDA device: {torch.cuda.current_device()}")
+        print(f"Device name: {torch.cuda.get_device_name()}")
 
-    # Process text
-    segmented = model.split(text)
+    # Initialize model with GPU and half precision
+    model = SaT("sat-3l-sm")
+    model.half().to("cuda")
 
+    # Process the text
+    segmented = model.split(text, do_paragraph_segmentation=True, verbose=True)
     overall_end = time.time()
     print(f"\nTotal execution time: {overall_end - overall_start:.2f} seconds")
-
     return {"segmented_text": segmented}
 
 
