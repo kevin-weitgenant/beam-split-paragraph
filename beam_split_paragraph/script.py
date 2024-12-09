@@ -35,26 +35,10 @@ def download_models():
             os.makedirs(path)
             logger.info(f"Created directory: {path}")
 
-    # Create test file
-    test_file_path = os.path.join(CACHE_PATH, "test.txt")
-    if not os.path.exists(test_file_path):
-        with open(test_file_path, "w") as f:
-            f.write("Test file to verify volume persistence")
-        logger.info(f"Created test file at {test_file_path}")
-    else:
-        logger.info(f"Test file already exists at {test_file_path}")
-
-    # Now proceed with model download
     from wtpsplit import SaT
 
-    logger.info("=== Cache Contents Before Model Download ===")
-    cache_path = Path(CACHE_PATH)
-    for path in cache_path.iterdir():
-        if path.is_dir():
-            logger.info(path)
-
     model = SaT("sat-3l-sm")
-    model.half().to("cuda")
+    model.to("cuda")
 
    
 

@@ -15,7 +15,7 @@ def segment_text(text: str):
 
     # Initialize model with GPU and half precision
     model = SaT("sat-3l-sm")
-    model.half().to("cuda")
+    model.to("cuda")
 
     # Process the text
     segmented = model.split(text, do_paragraph_segmentation=True, verbose=True)
